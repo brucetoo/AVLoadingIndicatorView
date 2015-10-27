@@ -241,7 +241,7 @@ public class AVLoadingIndicatorView extends View{
                 mIndicatorController=new BallScaleMultipleIndicator();
                 break;
             case BallPulseSync:
-                mIndicatorController=new BallLoadingIndicator();
+                mIndicatorController=new BallPulseSyncIndicator();
                 break;
             case BallBeat:
                 mIndicatorController=new BallBeatIndicator();
