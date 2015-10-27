@@ -21,8 +21,9 @@ public class LineSpinFadeLoaderIndicator extends BallSpinFadeLoaderIndicator {
             canvas.scale(scaleFloats[i], scaleFloats[i]);
             canvas.rotate(i*45);
             paint.setAlpha(alphas[i]);
+            //绘制矩形的区域
             RectF rectF=new RectF(-radius,-radius/1.5f,1.5f*radius,radius/1.5f);
-            /*RectF rectF=new RectF(0,0,2*radius,1f*radius);*/
+//            RectF rectF=new RectF(0,0,2*radius,1f*radius);
             canvas.drawRoundRect(rectF,5,5,paint);
             canvas.restore();
         }

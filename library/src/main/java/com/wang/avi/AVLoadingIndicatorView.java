@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import com.wang.avi.indicator.BallBeatIndicator;
 import com.wang.avi.indicator.BallClipRotateIndicator;
@@ -152,7 +153,7 @@ public class AVLoadingIndicatorView extends View{
 
     BaseIndicatorController mIndicatorController;
 
-    private boolean mHasAnimation;
+    private boolean mHasAnimation;//用于控制 view是否已经在执行动画了
 
 
     public AVLoadingIndicatorView(Context context) {
@@ -240,7 +241,7 @@ public class AVLoadingIndicatorView extends View{
                 mIndicatorController=new BallScaleMultipleIndicator();
                 break;
             case BallPulseSync:
-                mIndicatorController=new BallPulseSyncIndicator();
+                mIndicatorController=new BallLoadingIndicator();
                 break;
             case BallBeat:
                 mIndicatorController=new BallBeatIndicator();
@@ -286,24 +287,24 @@ public class AVLoadingIndicatorView extends View{
         setMeasuredDimension(width, height);
     }
 
+    /**
+     * 通过xml设置的View的大小来 计算该view世纪显示的大小
+     * @param defaultSize
+     * @param measureSpec
+     * @return
+     */
     private int measureDimension(int defaultSize,int measureSpec){
         int result = defaultSize;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        if (specMode == MeasureSpec.EXACTLY) {
+        if (specMode == MeasureSpec.EXACTLY) {//指定了大小 andorid:layout_width = 固定值或者FILL_PARENT
             result = specSize;
-        } else if (specMode == MeasureSpec.AT_MOST) {
+        } else if (specMode == MeasureSpec.AT_MOST) {//andorid:layout_width = WRAP_CONTENT,控件空间可变时
             result = Math.min(defaultSize, specSize);
         } else {
             result = defaultSize;
         }
         return result;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawIndicator(canvas);
     }
 
     @Override
@@ -313,6 +314,12 @@ public class AVLoadingIndicatorView extends View{
             mHasAnimation=true;
             applyAnimation();
         }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawIndicator(canvas);
     }
 
     void drawIndicator(Canvas canvas){

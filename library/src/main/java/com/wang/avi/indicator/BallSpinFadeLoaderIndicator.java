@@ -3,7 +3,6 @@ package com.wang.avi.indicator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.nineoldandroids.animation.PropertyValuesHolder;
 import com.nineoldandroids.animation.ValueAnimator;
 
 /**
@@ -36,9 +35,12 @@ public class BallSpinFadeLoaderIndicator extends BaseIndicatorController {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        float radius=getWidth()/10;
+        float radius=getWidth()/10;//小圆半径
         for (int i = 0; i < 8; i++) {
             canvas.save();
+            //大圆半径=getWidth()/2 - radius
+            //每个圆心到x轴的角度 2*Math.PI/8 * i = Math.PI/4 * i
+            //获取每个圆的圆心坐标
             Point point=circleAt(getWidth(),getHeight(),getWidth()/2-radius,i*(Math.PI/4));
             canvas.translate(point.x,point.y);
             canvas.scale(scaleFloats[i],scaleFloats[i]);
@@ -68,6 +70,7 @@ public class BallSpinFadeLoaderIndicator extends BaseIndicatorController {
         int[] delays= {0, 120, 240, 360, 480, 600, 720, 780, 840};
         for (int i = 0; i < 8; i++) {
             final int index=i;
+            //圆圈缩放的范围
             ValueAnimator scaleAnim=ValueAnimator.ofFloat(1,0.4f,1);
             scaleAnim.setDuration(1000);
             scaleAnim.setRepeatCount(-1);
@@ -81,6 +84,7 @@ public class BallSpinFadeLoaderIndicator extends BaseIndicatorController {
             });
             scaleAnim.start();
 
+            //圆圈alpha的范围
             ValueAnimator alphaAnim=ValueAnimator.ofInt(255, 77, 255);
             alphaAnim.setDuration(1000);
             alphaAnim.setRepeatCount(-1);
